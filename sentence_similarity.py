@@ -2,9 +2,13 @@ import argparse
 import time
 
 import fasttext
+import fasttext.util
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+
+fasttext.util.download_model('zh', if_exists='ignore')
+ft = fasttext.load_model('cc.zh.300.bin')
 
 
 def similarity_percent(s1, s2, method="bert"):
@@ -32,7 +36,8 @@ def main():
     parser = argparse.ArgumentParser(description="計算兩個句子的相似度")
     parser.add_argument("sentence1", type=str, default="妳喜歡哪一種顏色", nargs="?", help="妳喜歡哪一種顏色")
     parser.add_argument("sentence2", type=str, default="妳最喜歡的顏色是什麼呢", nargs="?", help="妳最喜歡的顏色是什麼呢")
-    parser.add_argument("--method", type=str, default="bert", choices=["bert", "fasttext"], help="選擇使用的方法：'bert' 或 'fasttext'")
+    parser.add_argument("--method", type=str, default="fasttext", choices=["bert", "fasttext"],
+                        help="選擇使用的方法：'bert' 或 'fasttext'")
 
     args = parser.parse_args()
 
